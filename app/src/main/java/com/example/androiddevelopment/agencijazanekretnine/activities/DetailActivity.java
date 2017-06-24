@@ -36,6 +36,7 @@ import java.util.List;
 
 public class DetailActivity  extends AppCompatActivity{
 
+
     private ORMLightHelper databaseHelper;
     private SharedPreferences prefs;
     private Nekretnina n;

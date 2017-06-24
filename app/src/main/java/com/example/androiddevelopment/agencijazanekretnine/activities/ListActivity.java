@@ -60,7 +60,7 @@ public class ListActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        final ListView listView = (ListView) findViewById(R.id.glumci_list);
+        final ListView listView = (ListView) findViewById(R.id.nekretnina_list);
 
         try {
             List<Nekretnina> list = getDatabaseHelper().getNekretninarDao().queryForAll();
