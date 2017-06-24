@@ -94,7 +94,7 @@ public class DetailActivity  extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        final ListView listView = (ListView) findViewById(R.id.actor_movies);
+        final ListView listView = (ListView) findViewById(R.id.nekretnina);
 
         try {
             List<Nekretnina> list = getDatabaseHelper().getNekretninaDao().queryBuilder()
