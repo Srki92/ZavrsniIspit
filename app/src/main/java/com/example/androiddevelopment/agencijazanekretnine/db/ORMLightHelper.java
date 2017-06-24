@@ -50,7 +50,7 @@ public class ORMLightHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Dao<Nekretnina, Integer> getMovieDao() throws SQLException {
+    public Dao<Nekretnina, Integer> getNekretninaDao() throws SQLException {
         if (NekretninaDao == null) {
             NekretninaDao = getDao(Nekretnina.class);
         }

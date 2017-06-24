@@ -44,17 +44,17 @@ public class Nekretnina  {
 
 
     @DatabaseField(columnName = TABLE_NEKRETNINA_KVADRATURA)
-    private double nKvadratura;
+    private String nKvadratura;
 
 
     @DatabaseField(columnName = TABLE_NEKRETNINA_ROOMS)
-    private double nNumberOfRooms;
+    private String nNumberOfRooms;
 
 
     public Nekretnina() {
     }
 
-    public Nekretnina(int nId, String nName, String nDescription, float nScore, String nAdresa, String nPictures, String nPhoneNumber, double nKvadratura, double nNumberOfRooms) {
+    public Nekretnina(int nId, String nName, String nDescription, float nScore, String nAdresa, String nPictures, String nPhoneNumber, String nKvadratura, String nNumberOfRooms) {
         this.nId = nId;
         this.nName = nName;
         this.nDescription = nDescription;
@@ -122,20 +122,20 @@ public class Nekretnina  {
         this.nPhoneNumber = nPhoneNumber;
     }
 
-    public double getnKvadratura() {
+    public String getnKvadratura() {
         return nKvadratura;
     }
 
-    public void setnKvadratura(double nKvadratura) {
+    public void setnKvadratura(String nKvadratura) {
         this.nKvadratura = nKvadratura;
     }
 
 
-    public double getnNumberOfRooms() {
+    public String getnNumberOfRooms() {
         return nNumberOfRooms;
     }
 
-    public void setnNumberOfRooms(double nNumberOfRooms) {
+    public void setnNumberOfRooms(String nNumberOfRooms) {
         this.nNumberOfRooms = nNumberOfRooms;
     }
 }

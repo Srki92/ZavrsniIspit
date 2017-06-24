@@ -45,10 +45,10 @@ public class DetailActivity  extends AppCompatActivity{
     private EditText description;
     private EditText pictures;
     private EditText phoneNumber;
-    private EditText kvadraturom;
+    private EditText kvadratura;
     private EditText numberOfRooms;
     private EditText adresa;
-    private RatingBar score;
+    private RatingBar rating;
 
 
     @Override
@@ -65,17 +65,31 @@ public class DetailActivity  extends AppCompatActivity{
         int key = getIntent().getExtras().getInt(ListActivity.NEKRETNINA_KEY);
 
         try {
-            a = getDatabaseHelper().getActorDao().queryForId(key);
+            n = getDatabaseHelper().getNekretninaDao().queryForId(key);
 
-            name = (EditText) findViewById(R.id.actor_name);
-            bio = (EditText) findViewById(R.id.actor_biography);
-            birth = (EditText) findViewById(R.id.actor_birth);
-            rating = (RatingBar) findViewById(R.id.actor_rating);
+            name = (EditText) findViewById(R.id.nekretnina_name);
+            identifikator = (EditText) findViewById(R.id.nekretnina_identifikator);
+            description = (EditText) findViewById(R.id.nekretnina_description);
+            pictures = (EditText) findViewById(R.id.nekretnina_pictures);
+            rating = (RatingBar) findViewById(R.id.nekretnina_rating);
+            phoneNumber = (EditText) findViewById(R.id.nekretnina_phoneNumber);
+            kvadratura = (EditText) findViewById(R.id.nekretnina_kvadratura);
+            numberOfRooms = (EditText) findViewById(R.id.nekretnina_numberOfRooms);
+            adresa = (EditText) findViewById(R.id.nekretnina_adresa);
 
-            name.setText(a.getmName());
-            bio.setText(a.getmBiography());
-            birth.setText(a.getmBirth());
-            rating.setRating(a.getmScore());
+
+
+
+            name.setText(n.getnName());
+            description.setText(n.getnDescription());
+            identifikator.setText(n.getnId());
+            rating.setRating(n.getnScore());
+            pictures.setText(n.getnPictures());
+            phoneNumber.setText(n.getnPhoneNumber());
+            adresa.setText(n.getnAdresa());
+            kvadratura.setText(n.getnKvadratura());
+            numberOfRooms.setText(n.getnNumberOfRooms());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,9 +97,9 @@ public class DetailActivity  extends AppCompatActivity{
         final ListView listView = (ListView) findViewById(R.id.actor_movies);
 
         try {
-            List<Movie> list = getDatabaseHelper().getMovieDao().queryBuilder()
+            List<Nekretnina> list = getDatabaseHelper().getNekretninaDao().queryBuilder()
                     .where()
-                    .eq(Movie.FIELD_NAME_USER, a.getmId())
+                    .eq(Nekretnina.FIELD_NAME, n.getnId())
                     .query();
 
             ListAdapter adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
@@ -93,8 +107,8 @@ public class DetailActivity  extends AppCompatActivity{
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Movie m = (Movie) listView.getItemAtPosition(position);
-                    Toast.makeText(DetailActivity.this, m.getmName() + " " + m.getmGenre() + " " + m.getmYear(), Toast.LENGTH_SHORT).show();
+                    Nekretnina n = (Nekretnina) listView.getItemAtPosition(position);
+                    Toast.makeText(DetailActivity.this, n.getnName() + " " + n.getnAdresa() + " " + n.getnDescription() + " " + n.getnKvadratura() + " " + n.getnNumberOfRooms() + " " + n.getnPhoneNumber() + " " + n.getnId(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -107,14 +121,14 @@ public class DetailActivity  extends AppCompatActivity{
         ListView listView = (ListView) findViewById(R.id.actor_movies);
 
         if (listView != null) {
-            ArrayAdapter<Movie> adapter = (ArrayAdapter<Movie>) listView.getAdapter();
+            ArrayAdapter<Nekretnina> adapter = (ArrayAdapter<Nekretnina>) listView.getAdapter();
 
             if (adapter != null) {
                 try {
                     adapter.clear();
-                    List<Movie> list = getDatabaseHelper().getMovieDao().queryBuilder()
+                    List<Nekretnina> list = getDatabaseHelper().getNekretninaDao().queryBuilder()
                             .where()
-                            .eq(Movie.FIELD_NAME_USER, a.getmId())
+                            .eq(Nekretnina.FIELD_NAME, n.getnId())
                             .query();
 
                     adapter.addAll(list);
@@ -142,7 +156,7 @@ public class DetailActivity  extends AppCompatActivity{
     }
 
     private void showMessage(String message){
-        //provera podesenja
+
         boolean toast = prefs.getBoolean(NOTIF_STATUS, false);
         boolean status = prefs.getBoolean(NOTIF_STATUS, false);
 
@@ -167,30 +181,45 @@ public class DetailActivity  extends AppCompatActivity{
             case R.id.add_movie:
 
                 final Dialog dialog = new Dialog(this);
-                dialog.setContentView(R.layout.add_movie);
+                dialog.setContentView(R.layout.add_nekretnina);
 
                 Button add = (Button) dialog.findViewById(R.id.add_movie);
                 add.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        EditText name = (EditText) dialog.findViewById(R.id.movie_name);
-                        EditText genre = (EditText) dialog.findViewById(R.id.movie_genre);
-                        EditText year = (EditText) dialog.findViewById(R.id.movie_year);
+                        EditText name = (EditText) dialog.findViewById(R.id.nekretnina_name);
+                        EditText adresa = (EditText) dialog.findViewById(R.id.nekretnina_adresa);
+                        EditText description = (EditText) dialog.findViewById(R.id.nekretnina_description);
+                        EditText kvadratura = (EditText) dialog.findViewById(R.id.nekretnina_kvadratura);
+                        RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.nekretnina_rating);
+                        EditText id = (EditText) dialog.findViewById(R.id.nekretnina_identifikator);
+                        EditText pictures = (EditText) dialog.findViewById(R.id.nekretnina_pictures);
+                        EditText phoneNumber = (EditText) dialog.findViewById(R.id.nekretnina_phoneNumber);
+                        EditText numberOfRooms = (EditText) dialog.findViewById(R.id.nekretnina_numberOfRooms);
 
-                        Movie m = new Movie();
-                        m.setmName(name.getText().toString());
-                        m.setmGenre(genre.getText().toString());
-                        m.setmYear(year.getText().toString());
-                        m.setmUser(a);
+
+                        float rating = ratingBar.getRating();
+
+                        Nekretnina n = new Nekretnina();
+                        n.setnName(name.getText().toString());
+                        n.setnAdresa(adresa.getText().toString());
+                        n.setnDescription(description.getText().toString());
+                        n.setnKvadratura(kvadratura.getText().toString());
+                        // n.setnId(id.getText().toString());
+                        n.setnPictures(pictures.getText().toString());
+                        n.setnPhoneNumber(phoneNumber.getText().toString());
+                        n.setnNumberOfRooms(numberOfRooms.getText().toString());
+
+
 
                         try {
-                            getDatabaseHelper().getMovieDao().create(m);
+                            getDatabaseHelper().getNekretninaDao().create(n);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                         refresh();
 
-                        showMessage("New movie added to actor");
+                        showMessage("New nekretnina added to nekretnine");
 
                         dialog.dismiss();
                     }
@@ -199,26 +228,31 @@ public class DetailActivity  extends AppCompatActivity{
                 dialog.show();
 
                 break;
-            case R.id.edit_movie:
+            case R.id.edit_nekretnina:
 
-                a.setmName(name.getText().toString());
-                a.setmBirth(birth.getText().toString());
-                a.setmBiography(bio.getText().toString());
-                a.setmScore(rating.getRating());
+                Nekretnina n = new Nekretnina();
+                n.setnName(name.getText().toString());
+                n.setnAdresa(adresa.getText().toString());
+                n.setnDescription(description.getText().toString());
+                n.setnKvadratura(kvadratura.getText().toString());
+                // n.setnId(id.getText().toString());
+                n.setnPictures(pictures.getText().toString());
+                n.setnPhoneNumber(phoneNumber.getText().toString());
+                n.setnNumberOfRooms(numberOfRooms.getText().toString());
 
                 try {
-                    getDatabaseHelper().getActorDao().update(a);
+                    getDatabaseHelper().getNekretninaDao().update(n);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
                 break;
-            case R.id.remove_movie:
+            case R.id.remove_nekretnina:
 
                 try {
-                    getDatabaseHelper().getActorDao().delete(a);
+                    getDatabaseHelper().getNekretninaDao().delete(n);
 
-                    showMessage("Actor Deleted");
+                    showMessage("Nekretnina Deleted");
 
                     finish();
                 } catch (SQLException e) {
@@ -231,9 +265,9 @@ public class DetailActivity  extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public OrmLiteHelper getDatabaseHelper() {
+    public ORMLightHelper getDatabaseHelper() {
         if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(this, OrmLiteHelper.class);
+            databaseHelper = OpenHelperManager.getHelper(this, ORMLightHelper.class);
         }
         return databaseHelper;
     }

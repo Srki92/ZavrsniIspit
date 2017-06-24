@@ -10,6 +10,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity
+            android:name=".activities.ListActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Nekretnina">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".activities.DetailActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Nekretnina Detail" >
+
+        </activity>
+
+        <activity
+            android:name=".preferences.Preferences"
+            android:label="@string/activity_settings_name">
+    </activity>
+
+
     </application>
 
 </manifest>
